@@ -2,12 +2,13 @@
 	import './sp-style.css';
 	import axios from 'axios';
 	import { goto } from '$app/navigation';
+	import { checkAuth } from '$lib/stores/checkAuth';
 
 	let loginEnabled = $state(false);
 	let registerEnabled = $state(false);
 
 	// LOGIN
-    ///////////////////////////////////////////////////
+	///////////////////////////////////////////////////
 	let loginFields = $state({
 		email: '',
 		password: ''
@@ -29,6 +30,12 @@
 				withCredentials: true
 			});
 			localStorage.setItem('user', response.data.username);
+			checkAuth.set({
+				isAuthenticated: true,
+				user: response.data.username,
+				roles: response.data.roles
+			});
+			localStorage.setItem("auth", JSON.stringify($checkAuth));
 			console.log(response.data);
 			goto('/dashboard');
 		} catch (err) {
@@ -37,35 +44,35 @@
 	};
 
 	// REGISTER
-    //////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////
 	const switchToRegisterForm = () => {
 		registerEnabled = !registerEnabled;
 	};
 
-    let registerFields = $state({
-        email: "",
-        password: ""
-    });
+	let registerFields = $state({
+		email: '',
+		password: ''
+	});
 
-    const handleRegisterFieldChange = (e) => {
-        registerFields = {...registerFields, [e.target.name]: e.target.value}
-    }
+	const handleRegisterFieldChange = (e) => {
+		registerFields = { ...registerFields, [e.target.name]: e.target.value };
+	};
 
-    const register = async (e) => {
-    try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/auth/register`,
-        registerFields,
-        {
-          withCredentials: true,
-        });
-      console.log(response.data);
-      window.location.reload();
-    } catch (err) {
-      console.log("Catch: " + err);
-    }
-  }
-
+	const register = async (e) => {
+		try {
+			const response = await axios.post(
+				`${import.meta.env.VITE_API_URL}/auth/register`,
+				registerFields,
+				{
+					withCredentials: true
+				}
+			);
+			console.log(response.data);
+			window.location.reload();
+		} catch (err) {
+			console.log('Catch: ' + err);
+		}
+	};
 </script>
 
 <div class="startpage">
@@ -76,9 +83,7 @@
 	{#if !loginEnabled && !registerEnabled}
 		<button class="spform-button" type="button" onclick={() => switchToLoginForm()}>Login</button>
 		<p class="sp-register-link">
-			Don't have an account? Register <a href="#" onclick={() => switchToRegisterForm()}
-				>here.</a
-			>
+			Don't have an account? Register <a href="#" onclick={() => switchToRegisterForm()}>here.</a>
 		</p>
 	{/if}
 	{#if loginEnabled && !registerEnabled}
@@ -127,5 +132,5 @@
 			<button class="spform-button" onclick={(e) => register(e)}>Register</button>
 		</form>
 	{/if}
-    <p class="sp-build">Built with: Svelte</p>
+	<p class="sp-build">Built with: Svelte</p>
 </div>

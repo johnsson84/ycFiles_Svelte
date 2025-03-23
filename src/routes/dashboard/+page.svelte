@@ -1,18 +1,16 @@
 <script>
-    import './Dashboard.css';
-    import Header from '$lib/header/Header.svelte';
+	import { checkAuth } from '$lib/stores/checkAuth';
+	import Dashboard from '$lib/dashboard/Dashboard.svelte';
+	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
+
+	let isAuthenticated = $checkAuth.isAuthenticated;
+    console.log($checkAuth);
 </script>
 
-<div class='dashboard'>
-    <header class='db-header db-general'>
-        <Header />
-    </header>
-    <section class='db-section'>
-        <div class='db-sidebar db-general'>
-            <p>Sidebar</p>
-        </div>
-        <div class='db-content db-general'>
-            <p>Content</p>
-        </div>
-    </section>
-</div>
+{#if !$checkAuth.isAuthenticated}
+	<h1>Not authenticated...</h1>
+    <p>Return to <a href="/">login</a></p>
+{:else}
+	<Dashboard />
+{/if}

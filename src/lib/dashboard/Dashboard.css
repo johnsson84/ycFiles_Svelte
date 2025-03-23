@@ -30,6 +30,7 @@
 }
 
 .db-sidebar {
+    display: flex;
     height: 100%;
     width: 20%;
     min-width: 150px;
@@ -38,6 +39,7 @@
 }
 
 .db-content {
+    display: flex;
     height: 100%;
     width: 80%;
     min-width: 200px;

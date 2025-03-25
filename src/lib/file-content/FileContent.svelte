@@ -8,7 +8,7 @@
 	const handleFileChange = (e) => {
 		if (e.target.files) {
 			file = e.target.files[0];
-            console.log("Selected file:", file);
+			console.log('Selected file:', file);
 		}
 	};
 
@@ -31,7 +31,7 @@
 				}
 			);
 			file = null;
-            getFiles($selectedFolder);
+			getFiles($selectedFolder);
 		} catch (error) {
 			console.log(error);
 		}
@@ -43,7 +43,10 @@
 			const res = await axios.get(
 				`${import.meta.env.VITE_API_URL}/files/getFiles/${user}/${folderName}`,
 				{
-					withCredentials: true
+					withCredentials: true,
+					headers: {
+						'Content-Type': 'application/json'
+					}
 				}
 			);
 			files = res.data;

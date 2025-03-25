@@ -3,23 +3,23 @@
 	padding: 0;
 	box-sizing: border-box;
 }
-
 html {
   width: 100%;
   height: 100%;
 }
-
-
 body {
   width: 100%;
   height: 100%;
   background-color: #e5e5e5;
 }
-
 .ycFiles {
     display: flex;
     flex-direction: column;
     align-items: center;
     height: 100vh;
     width: 100vw;
+}
+:root {
+  --bg: #fb6d21;
+  --hover: #ff955d;
 }

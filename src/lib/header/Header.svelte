@@ -17,6 +17,7 @@
 				}
 			);
 			localStorage.clear();
+			sessionStorage.clear();
 			checkAuth.set({
 				isAuthenticated: false,
 				user: null,
@@ -38,7 +39,7 @@
 
 <div class="header">
 	<div class="header-appname">
-		<h1>ycFiles</h1>
+		<a href="/"><h1>ycFiles</h1></a>
 		<h2>&nbsp;- your cloud files</h2>
 	</div>
 	<div class="header-user">

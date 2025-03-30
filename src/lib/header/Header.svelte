@@ -4,6 +4,7 @@
 	import axios from 'axios';
 	import { onMount } from 'svelte';
 	import { checkAuth } from '$lib/stores/checkAuth';
+	import { folders } from '$lib/stores/files';
 
 	let user = $state(null);
 
@@ -23,6 +24,7 @@
 				user: null,
 				roles: []
 			});
+			folders.set([]);
 			goto('/');
 		} catch (error) {
 			console.log('Logout error: ' + error);

@@ -3,6 +3,7 @@
 	import Dashboard from '$lib/dashboard/Dashboard.svelte';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
+	import axios from 'axios';
 
 	let isAuthenticated = $checkAuth.isAuthenticated;
 

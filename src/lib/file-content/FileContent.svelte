@@ -2,6 +2,7 @@
 	import './FileContent.css';
 	import axios from 'axios';
 	import { selectedFolder } from '$lib/stores/files';
+	import { onMount } from 'svelte';
 	let file = $state(null);
 	let files = $state([]);
 
@@ -65,6 +66,7 @@
 
 <div class="filecontent">
 	<div class="fc-box">
+		{#if $selectedFolder}
 		<div class="fc-header">
 			<h2 class="fc-name">{$selectedFolder}:</h2>
 			<div class="fc-addfiles">
@@ -75,6 +77,7 @@
 				<input id="fc-input" type="file" onchange={handleFileChange} />
 			</div>
 		</div>
+		{/if}
 		<div class="fc-content">
 			{#if files}
 				{#each files as file}

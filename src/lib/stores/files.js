@@ -1,8 +1,5 @@
 import { writable } from 'svelte/store';
 
-export const selectedFolder = writable("Upload");
+export const selectedFolder = writable("");
 
-export const folders = writable([
-    {name: 'Upload'},
-    {name: 'Crap'}
-])
+export const folders = writable([])

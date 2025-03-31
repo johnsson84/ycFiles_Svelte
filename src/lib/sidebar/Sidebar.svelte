@@ -1,7 +1,7 @@
 <script>
 	import './Sidebar.css';
 	import { folders } from '$lib/stores/files';
-	import { selectedFolder } from '$lib/stores/files';
+	import { selectedFolder, files } from '$lib/stores/files';
 	import { onMount } from 'svelte';
 
 	let showFolderBox = $state(false);
@@ -81,8 +81,12 @@
                 options
             );
             folders.update((prev) => prev.filter((folder) => folder.name !== folderToDelete));
-            folderToDelete = "";
-            $selectedFolder = "";
+			if ($selectedFolder === folderToDelete) {
+				$files = [];
+				$selectedFolder = null;
+			}
+			folderToDelete = "";
+            
         } catch (fetchError) {
             console.log(fetchError);
         }

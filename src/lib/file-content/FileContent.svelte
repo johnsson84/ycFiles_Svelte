@@ -1,10 +1,9 @@
 <script>
 	import './FileContent.css';
 	import axios from 'axios';
-	import { selectedFolder } from '$lib/stores/files';
+	import { selectedFolder, files } from '$lib/stores/files';
 	import { onMount } from 'svelte';
 	let file = $state(null);
-	let files = $state([]);
 
 	const handleFileChange = (e) => {
 		if (e.target.files) {
@@ -50,7 +49,7 @@
 					}
 				}
 			);
-			files = res.data;
+			$files = res.data;
 			console.log(res);
 		} catch (error) {
 			console.log(error);
@@ -66,7 +65,7 @@
 
 <div class="filecontent">
 	<div class="fc-box">
-		{#if $selectedFolder}
+		{#if $selectedFolder && $selectedFolder.length > 0}
 		<div class="fc-header">
 			<h2 class="fc-name">{$selectedFolder}:</h2>
 			<div class="fc-addfiles">
@@ -79,8 +78,8 @@
 		</div>
 		{/if}
 		<div class="fc-content">
-			{#if files}
-				{#each files as file}
+			{#if $files}
+				{#each $files as file}
 					<div class="fc-item">
 						{file}
 					</div>

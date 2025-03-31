@@ -4,6 +4,7 @@
 	import { selectedFolder, files } from '$lib/stores/files';
 	import { onMount } from 'svelte';
 	let file = $state(null);
+	let fileToDelete = $state(null);
 
 	const handleFileChange = (e) => {
 		if (e.target.files) {
@@ -61,28 +62,70 @@
 			getFiles(folderName);
 		}
 	});
+
+	const deleteFile = async () => {
+		const user = localStorage.getItem('user');
+
+		const options = {
+			method: 'DELETE', // Specify the HTTP method
+			credentials: 'include', // Allow cookies to be sent with the request
+			headers: {
+				'Content-Type': 'application/json' // Set the content type to JSON
+			}
+		};
+
+		try {
+			const res = await fetch(
+				`${import.meta.env.VITE_API_URL}/files/delete/${user}/${$selectedFolder}/${fileToDelete}`,
+				options
+			);
+			files.update((prev) => prev.filter((file) => file !== fileToDelete));
+			fileToDelete = null;
+		} catch (fetchError) {
+			console.log(fetchError);
+		}
+	};
 </script>
 
 <div class="filecontent">
 	<div class="fc-box">
 		{#if $selectedFolder && $selectedFolder.length > 0}
-		<div class="fc-header">
-			<img src="/src/assets/folder.svg" width="20rem" />
-			<h2 class="fc-name">{$selectedFolder}:</h2>
-			<div class="fc-addfiles">
-				<button class={`fc-add ${file ? 'fc-add-show' : ''}`} onclick={handleUploadClick}
-					>Add</button
-				>
-				<label class="fc-input-label" for="fc-input">Select File</label>
-				<input id="fc-input" type="file" onchange={handleFileChange} />
+			<div class="fc-header">
+				<img src="/src/assets/folder.svg" width="20rem" />
+				<h2 class="fc-name">{$selectedFolder}</h2>
+				<div class="fc-addfiles">
+					<button class={`fc-add ${file ? 'fc-add-show' : ''}`} onclick={handleUploadClick}
+						>Add</button
+					>
+					<label class="fc-input-label" for="fc-input">Select File</label>
+					<input id="fc-input" type="file" onchange={handleFileChange} />
+				</div>
 			</div>
-		</div>
 		{/if}
 		<div class="fc-content">
 			{#if $files}
 				{#each $files as file}
-					<div class="fc-item">
-						{file}
+					<div class="fc-item-row">
+						<div class="fc-item-row2">
+							<img src="/src/assets/file.svg" alt="file-icon" width="30rem" />
+							<div class="fc-item">
+								{file}
+							</div>
+							<button type="image" class="fc-delete" onclick={() => fileToDelete = file}>
+								<img src="/src/assets/trash.svg" height="30rem">
+							</button>
+						</div>
+						{#if fileToDelete === file}
+							<div class="fc-delFolder">
+								<p>This will delete all files!</p>
+								<div>
+									<button class="fc-delFolder-buttons" onclick={() => deleteFile()}> Yes </button>
+									<button class="fc-delFolder-buttons" onclick={() => (fileToDelete = null)}>
+										No
+									</button>
+								</div>
+							</div>
+						{/if}
 					</div>
 				{/each}
 			{/if}

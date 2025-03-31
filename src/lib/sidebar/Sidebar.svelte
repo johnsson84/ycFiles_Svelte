@@ -107,6 +107,7 @@
 <div class="sidebar">
 	<nav class="sb-nav">
 		<h2 class="sb-folder-name">
+			<img src="/src/assets/folder.svg" width="20rem" />
 			Folders{' '}
 			<button class="sb-folder-button" onclick={() => (showFolderBox = true)}> + </button>
 		</h2>
@@ -135,6 +136,7 @@
 				{#each $folders as folder}
 					<div class="sb-list-section">
 						<div class="sb-list-section2">
+							<img src="/src/assets/folder.svg" width="20rem" />
 							<li
 								class={`sb-folder ${$selectedFolder === folder.name ? 'sb-selected' : ''}`}
 								onclick={(e) => selectFolder(folder.name)}

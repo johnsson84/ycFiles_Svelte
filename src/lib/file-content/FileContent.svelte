@@ -67,6 +67,7 @@
 	<div class="fc-box">
 		{#if $selectedFolder && $selectedFolder.length > 0}
 		<div class="fc-header">
+			<img src="/src/assets/folder.svg" width="20rem" />
 			<h2 class="fc-name">{$selectedFolder}:</h2>
 			<div class="fc-addfiles">
 				<button class={`fc-add ${file ? 'fc-add-show' : ''}`} onclick={handleUploadClick}

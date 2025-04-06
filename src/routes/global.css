@@ -10,7 +10,7 @@ html {
 body {
   width: 100%;
   height: 100%;
-  background-color: #e5e5e5;
+  background-color: rgb(249, 213, 163);
 }
 .ycFiles {
     display: flex;
@@ -22,4 +22,5 @@ body {
 :root {
   --bg: #fb6d21;
   --hover: #ff955d;
+  --button: #dbdbdb;
 }

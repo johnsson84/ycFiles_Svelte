@@ -7,14 +7,15 @@
 	let fileToDelete = $state(null);
 	let user = $state(localStorage.getItem('user'));
 
-	const handleFileChange = (e) => {
+	const handleUploadFile = (e) => {
 		if (e.target.files) {
 			file = e.target.files[0];
 			console.log('Selected file:', file);
 		}
+		uploadFile();
 	};
 
-	const handleUploadClick = async () => {
+	const uploadFile = async () => {
 		if (!file) {
 			return;
 		}
@@ -82,48 +83,46 @@
 	};
 
 	const downloadFile = async (file) => {
-        console.log(file);
-        const options = {
-            method: "GET",
-            credentials: "include",
-        };
+		console.log(file);
+		const options = {
+			method: 'GET',
+			credentials: 'include'
+		};
 
-        try {
-            const res = await fetch(
-                `${
-                    import.meta.env.VITE_API_URL
-                }/files/download/${user}/${$selectedFolder}/${file}`,
-                options
-            );
+		try {
+			const res = await fetch(
+				`${import.meta.env.VITE_API_URL}/files/download/${user}/${$selectedFolder}/${file}`,
+				options
+			);
 
-            if (!res.ok) {
-                throw new Error(`HTTP error! status: ${res.status}`);
-            }
+			if (!res.ok) {
+				throw new Error(`HTTP error! status: ${res.status}`);
+			}
 
-            // Convert to blob
-            const blob = await res.blob();
+			// Convert to blob
+			const blob = await res.blob();
 
-            // URL for blob
-            const url = window.URL.createObjectURL(blob);
+			// URL for blob
+			const url = window.URL.createObjectURL(blob);
 
-            // Create an anchor element and set its attributes
-            const a = document.createElement("a");
-            a.href = url;
-            a.download = file; // Set the filename to download
+			// Create an anchor element and set its attributes
+			const a = document.createElement('a');
+			a.href = url;
+			a.download = file; // Set the filename to download
 
-            // Append the anchor element to the body
-            document.body.appendChild(a);
+			// Append the anchor element to the body
+			document.body.appendChild(a);
 
-            // Programmatically click the anchor
-            a.click();
+			// Programmatically click the anchor
+			a.click();
 
-            // Clean up: revoke the URL and remove the anchor element
-            window.URL.revokeObjectURL(url);
-            document.body.removeChild(a);
-        } catch (fetchError) {
-            console.log(fetchError);
-        }
-    };
+			// Clean up: revoke the URL and remove the anchor element
+			window.URL.revokeObjectURL(url);
+			document.body.removeChild(a);
+		} catch (fetchError) {
+			console.log(fetchError);
+		}
+	};
 </script>
 
 <div class="filecontent">
@@ -133,11 +132,10 @@
 				<img src="/src/assets/folder.svg" width="20rem" />
 				<h2 class="fc-name">{$selectedFolder}</h2>
 				<div class="fc-addfiles">
-					<button class={`fc-add ${file ? 'fc-add-show' : ''}`} onclick={handleUploadClick}
-						>Add</button
+					<label class="fc-upload" for="fc-input"
+						><img src="src/assets/upload.svg" width="30rem" /></label
 					>
-					<label class="fc-input-label" for="fc-input">Select File</label>
-					<input id="fc-input" type="file" onchange={handleFileChange} />
+					<input id="fc-input" type="file" onchange={handleUploadFile} />
 				</div>
 			</div>
 		{/if}
@@ -151,7 +149,7 @@
 								{file}
 							</div>
 							<button type="image" class="fc-download" onclick={() => downloadFile(file)}>
-								<img src="/src/assets/download.svg" height="30rem">
+								<img src="/src/assets/download.svg" height="30rem" />
 							</button>
 							<button type="image" class="fc-delete" onclick={() => (fileToDelete = file)}>
 								<img src="/src/assets/trash.svg" height="30rem" />

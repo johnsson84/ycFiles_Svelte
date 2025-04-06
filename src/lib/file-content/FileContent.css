@@ -12,6 +12,7 @@
     background-color: #efefef;
     padding: 0.5rem;
     width: 100%;
+    border-radius: 7px;
 }
 .fc-header {
     display: flex;
@@ -26,32 +27,15 @@
     align-items: center;
     justify-content: flex-start;
 }
-.fc-add {
-    display: none;
-    padding: 0 10px 0 10px;
-    margin-right: 10px;
-    border: none;
-    background-color: var(--bg);
-    font-weight: 600;
-    font-size: large;
-}
-.fc-add-show {
-    display:block;
-}
-.fc-add:hover {
-    background-color: var(--hover);
-}
 #fc-input[type="file"] {
     visibility: hidden;
 }
-.fc-input-label {
+.fc-upload {
     display: inline-block;
-    background-color: #dbdbdb;
-    padding: 0 10px 0 10px;
-    font-size: large;
 }
-.fc-input-label:hover {
+.fc-upload:hover {
     background-color: var(--hover);
+    border-radius: 4px;
 }
 .fc-content {
     display: flex;
@@ -59,6 +43,8 @@
     width: 100%;
     margin: 0.5rem auto;
     padding: 5px;
+    background-color: white;
+    border-radius: 4px;
 }
 
 .fc-item-row {
@@ -70,28 +56,29 @@
     display: flex;
 }
 .fc-item-row2 img {
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0);
 }
 .fc-item {
     width: 100%;
     padding: 0.5rem;
-    background-color: rgb(255, 255, 255);
 }
 .fc-delete, .fc-download {
     border: none;
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0);
 }
 .fc-download img {
     background-color: rgba(0, 0, 0, 0);
 }
 .fc-download:hover {
     background-color: var(--hover);
+    border-radius: 4px;
 }
 .fc-delete img {
     background-color: #00000000;
 }
 .fc-delete:hover {
-    background-color: lightcoral !important;
+    background-color: lightcoral;
+    border-radius: 4px;
 }
 
 .fc-delFolder {

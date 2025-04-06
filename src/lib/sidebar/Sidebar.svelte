@@ -9,7 +9,6 @@
 	let folderToDelete = $state('');
 	const selectFolder = (e) => {
 		selectedFolder.set(e);
-		console.log($selectedFolder);
 	};
 
 	const getFolder = async () => {
@@ -26,7 +25,6 @@
 		try {
 			const res = await fetch(`${import.meta.env.VITE_API_URL}/files/getFolders/${user}`, options);
 			const data = await res.json();
-			console.log(data);
 			if (Array.isArray(data)) {
 				folders.update((prev) => [
 					...prev,

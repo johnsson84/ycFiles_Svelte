@@ -5,6 +5,7 @@
 	import { onMount } from 'svelte';
 	let file = $state(null);
 	let fileToDelete = $state(null);
+	let user = $state(localStorage.getItem('user'));
 
 	const handleFileChange = (e) => {
 		if (e.target.files) {
@@ -17,8 +18,6 @@
 		if (!file) {
 			return;
 		}
-
-		const user = localStorage.getItem('user');
 
 		const formData = new FormData();
 		formData.append('file', file);
@@ -39,7 +38,6 @@
 	};
 
 	const getFiles = async (folderName) => {
-		const user = localStorage.getItem('user');
 		try {
 			const res = await axios.get(
 				`${import.meta.env.VITE_API_URL}/files/getFiles/${user}/${folderName}`,
@@ -51,7 +49,6 @@
 				}
 			);
 			$files = res.data;
-			console.log(res);
 		} catch (error) {
 			console.log(error);
 		}
@@ -64,8 +61,6 @@
 	});
 
 	const deleteFile = async () => {
-		const user = localStorage.getItem('user');
-
 		const options = {
 			method: 'DELETE', // Specify the HTTP method
 			credentials: 'include', // Allow cookies to be sent with the request
@@ -85,6 +80,50 @@
 			console.log(fetchError);
 		}
 	};
+
+	const downloadFile = async (file) => {
+        console.log(file);
+        const options = {
+            method: "GET",
+            credentials: "include",
+        };
+
+        try {
+            const res = await fetch(
+                `${
+                    import.meta.env.VITE_API_URL
+                }/files/download/${user}/${$selectedFolder}/${file}`,
+                options
+            );
+
+            if (!res.ok) {
+                throw new Error(`HTTP error! status: ${res.status}`);
+            }
+
+            // Convert to blob
+            const blob = await res.blob();
+
+            // URL for blob
+            const url = window.URL.createObjectURL(blob);
+
+            // Create an anchor element and set its attributes
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = file; // Set the filename to download
+
+            // Append the anchor element to the body
+            document.body.appendChild(a);
+
+            // Programmatically click the anchor
+            a.click();
+
+            // Clean up: revoke the URL and remove the anchor element
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        } catch (fetchError) {
+            console.log(fetchError);
+        }
+    };
 </script>
 
 <div class="filecontent">
@@ -111,8 +150,11 @@
 							<div class="fc-item">
 								{file}
 							</div>
-							<button type="image" class="fc-delete" onclick={() => fileToDelete = file}>
-								<img src="/src/assets/trash.svg" height="30rem">
+							<button type="image" class="fc-download" onclick={() => downloadFile(file)}>
+								<img src="/src/assets/download.svg" height="30rem">
+							</button>
+							<button type="image" class="fc-delete" onclick={() => (fileToDelete = file)}>
+								<img src="/src/assets/trash.svg" height="30rem" />
 							</button>
 						</div>
 						{#if fileToDelete === file}
